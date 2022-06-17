@@ -164,7 +164,7 @@ namespace Newtonsoft.Json
         }
 
         private void ParseReadString(char quote, ReadType readType)
-        { 
+        {
             SetPostValueState(true);
 
             switch (readType)
@@ -2218,7 +2218,15 @@ namespace Newtonsoft.Json
                                     }
                                     else
                                     {
-                                        throw ThrowReaderError("Input string '{0}' is not a valid number.".FormatWith(CultureInfo.InvariantCulture, _stringReference.ToString()));
+                                        try
+                                        {
+                                            numberValue = Convert.ToUInt64(number, 16);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            throw ThrowReaderError("Input string '{0}' is not a valid number.".FormatWith(CultureInfo.InvariantCulture, number), ex);
+                                        }
+                                        //throw ThrowReaderError("Input string '{0}' is not a valid number.".FormatWith(CultureInfo.InvariantCulture, _stringReference.ToString()));
                                     }
                                 }
 
